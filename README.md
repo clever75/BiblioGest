@@ -21,7 +21,7 @@ Beaucoup de petites bibliothèques gèrent leurs emprunts sur papier : livres pe
 
 ## Stack
 
-Java 8 · Swing (interfaces dessinées avec NetBeans) · FlatLaf (thème) · MySQL / MariaDB via JDBC · JasperReports, iText, JFreeChart · packaging avec Ant (NetBeans) et installeur Inno Setup.
+Java 8 · Swing (interfaces dessinées avec NetBeans) · FlatLaf (thème) · MariaDB / MySQL via JDBC (pilote MariaDB Connector/J) · JasperReports, iText, JFreeChart · packaging Ant (NetBeans) · installeur Inno Setup qui embarque Java et MariaDB.
 
 ## Architecture
 
@@ -36,19 +36,37 @@ src/reports/  modèle de rapport JasperReports
 lib/          bibliothèques .jar nécessaires
 ```
 
+## Essayer l'application (le plus simple)
+
+1. Télécharger `BiblioGest_Setup_v1.0.exe` dans la page [Releases](https://github.com/clever75/BiblioGest/releases) et lancer l'installeur (droits administrateur demandés).
+2. L'installeur met en place l'application, **sa propre base MariaDB** (service Windows `BiblioGestDB`, port 3307, accessible uniquement depuis votre PC), les tables et un compte de démonstration. Rien d'autre à installer.
+3. Lancer BiblioGest et se connecter avec le compte de démonstration ci-dessous.
+
+## Compte de démonstration
+
+| Identifiant | Mot de passe |
+|-------------|--------------|
+| `demo`      | `demo1234`   |
+
+Compte fictif créé par l'installeur, uniquement pour tester.
+
 ## Installation pour le développement
 
-Prérequis : JDK 8 ou plus, NetBeans, MySQL ou MariaDB (XAMPP convient).
+Prérequis : JDK 8 ou plus, NetBeans, MariaDB ou MySQL (XAMPP convient).
 
-1. Créer la base `biblioapp` puis importer `database/biblioapp.sql`.
-2. La connexion est dans `src/dao/Connexion.java` (par défaut : `localhost:3306`, utilisateur `root`, mot de passe vide).
-3. Ouvrir le dossier dans NetBeans (*File → Open Project*). Les `.jar` du dossier `lib/` sont déjà référencés.
-4. Lancer le projet : la classe principale est `views.MainFrame`.
-5. Créer un premier utilisateur dans la table `utilisateur` pour pouvoir vous connecter.
+1. Créer la base `biblioapp`, puis importer `database/schema.sql` (tables) et `database/seed.sql` (compte de démonstration).
+2. Ouvrir le dossier dans NetBeans (*File → Open Project*). Les `.jar` de `lib/` sont déjà référencés.
+3. Lancer le projet : la classe principale est `views.MainFrame`.
 
-## Utilisation sans développement
+La connexion à la base se règle dans un fichier `config.properties` placé à côté de l'application (jamais envoyé sur GitHub). **Sans ce fichier**, l'application utilise les réglages de développement `localhost:3306`, utilisateur `root`, mot de passe vide (XAMPP). Format du fichier :
 
-Télécharger `BiblioGest_Setup_v1.0.exe` dans la page [Releases](https://github.com/clever75/BiblioGest/releases) et lancer l'installeur. MySQL doit tourner sur la machine.
+```properties
+db.host=127.0.0.1
+db.port=3306
+db.name=biblioapp
+db.user=root
+db.password=
+```
 
 ## Ce que j'ai appris
 
@@ -59,8 +77,7 @@ Télécharger `BiblioGest_Setup_v1.0.exe` dans la page [Releases](https://github
 
 ## Limites connues et pistes d'amélioration
 
-- Les mots de passe sont stockés en clair dans la base : à remplacer par un hachage (BCrypt). C'est la première amélioration prévue.
-- Identifiants de base codés en dur dans `Connexion.java` : à déplacer dans un fichier de configuration.
+- Les mots de passe des utilisateurs de l'application sont stockés en clair dans la table `utilisateur` : à remplacer par un hachage (BCrypt). C'est la première amélioration prévue.
 - Pas de tests automatisés.
 
 ## Contexte
