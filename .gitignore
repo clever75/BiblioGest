@@ -24,3 +24,5 @@ config.properties
 *.tmp
 .DS_Store
 Thumbs.db
+
+*-ancien.*
