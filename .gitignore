@@ -1,0 +1,26 @@
+# --- Compilation (NetBeans / Ant) ---
+build/
+dist/
+output/
+nbproject/private/
+built-jar.properties
+built_jar.properties
+*.class
+
+# --- Installeur : à publier dans GitHub Releases, pas dans le code ---
+installer/
+
+# --- Configuration locale (contient les identifiants de la base de données) ---
+config.properties
+
+# --- Historique local de l'éditeur et sauvegardes ---
+.history/
+.gitignore_*
+*.sauvegarde
+
+# --- Fichiers temporaires / OS ---
+.tmp.driveupload/
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
